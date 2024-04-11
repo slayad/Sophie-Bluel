@@ -16,6 +16,7 @@ fetch("http://localhost:5678/api/works")
             gallery.innerHTML = ''; 
             works.forEach((work) => {
                 const figure = document.createElement('figure');
+                figure.setAttribute("category-id" , work.categoryId)
                 const div = document.createElement('div');
                 const img = document.createElement('img');
         
@@ -36,8 +37,117 @@ fetch("http://localhost:5678/api/works")
 //categories  
 
 fetch('http://localhost:5678/api/categories')
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {console.log(data)
-        })
+    .then((response) => response.json())
+        .then((categories) => {
+            const filtres = document.querySelector('.filter');
+
+            // Créer le bouton "Tous"
+            const allButton = document.createElement('button')
+                allButton.setAttribute("type", "button")
+                allButton.classList.add("bouton")
+                allButton.innerHTML = "Tous";
+                filtres.appendChild(allButton);
+
+            /**
+             * Pour chaque catégorie, on crée un bouton :
+             * - on lui ajoute les attributs nécessaires,
+             * - et on l'ajoute dans la div ".filter"
+             */
+            categories.forEach((category) => {
+                const categoryButton = document.createElement('button')
+                categoryButton.setAttribute("type", "button")
+                categoryButton.setAttribute('category-id', category.id)
+                categoryButton.classList.add("bouton")
+                categoryButton.innerHTML= category.name
+                filtres.appendChild(categoryButton);
+            });
+
+            /**
+             * Je gère les filtres au clic sur les boutons
+             */
+            const buttons = filtres.querySelectorAll('.bouton');
+
+            // Pour chaque bouton de filtre
+            buttons.forEach((button) => {
+                // J'écoute le clic sur ce bouton
+                button.addEventListener('click', () => {
+                    // Je récupère l'ID de la catégorie associée à ce bouton
+                    const categoryId = button.getAttribute('category-id');
+                    if (categoryId === "1") {
+                        filtreObjet()
+                    } else if (categoryId === "3") {
+                        filtreHotelsRestaurants()
+                    }
+                      else if (categoryId === "2"){
+                        filtreAppartements()
+                    }
+                    else {
+                        filtreTous();
+                    }
+                })
+            })
+        });
+
+
+//Filtre Objects//
+        
+function filtreObjet(){
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+      const categoryId = element.getAttribute('category-id');
+      if (categoryId === '1') {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    });
+}
+
+
+//Filtre Hotel & restaurants//
+        
+function filtreHotelsRestaurants(){
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+      const categoryId = element.getAttribute('category-id');
+      if (categoryId === '3') {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    });
+}
+
+
+        
+//Filtre Appartements//
+
+function filtreAppartements(){
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+        const categoryId = element.getAttribute('category-id');
+        if (categoryId === '2') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    });
+}
+
+
+//Filtre tous//
+function filtreTous(){
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+        element.style.display = 'block';
+    });   
+}
+
+
+
+
+
+
+
+
+
