@@ -42,10 +42,13 @@ fetch('http://localhost:5678/api/categories')
             const filtres = document.querySelector('.filter');
 
             // Créer le bouton "Tous"
-            const allButton = document.createElement('button')
+            const allButton = createFilterButton(null, 'Tous')
+            
+            /*document.createElement('button')
                 allButton.setAttribute("type", "button")
                 allButton.classList.add("bouton")
                 allButton.innerHTML = "Tous";
+                */
                 filtres.appendChild(allButton);
 
             /**
@@ -54,11 +57,12 @@ fetch('http://localhost:5678/api/categories')
              * - et on l'ajoute dans la div ".filter"
              */
             categories.forEach((category) => {
-                const categoryButton = document.createElement('button')
+                const categoryButton = createFilterButton(category.id, category.name)
+                /*document.createElement('button')
                 categoryButton.setAttribute("type", "button")
                 categoryButton.setAttribute('category-id', category.id)
                 categoryButton.classList.add("bouton")
-                categoryButton.innerHTML= category.name
+                categoryButton.innerHTML= category.name*/
                 filtres.appendChild(categoryButton);
             });
 
@@ -73,60 +77,21 @@ fetch('http://localhost:5678/api/categories')
                 button.addEventListener('click', () => {
                     // Je récupère l'ID de la catégorie associée à ce bouton
                     const categoryId = button.getAttribute('category-id');
-                    if (categoryId === "1") {
-                        filtreObjet()
-                    } else if (categoryId === "3") {
-                        filtreHotelsRestaurants()
-                    }
-                      else if (categoryId === "2"){
-                        filtreAppartements()
-                    }
-                    else {
+
+                    if (categoryId) {
+                        filtreWorks(categoryId)
+                    } else {
                         filtreTous();
                     }
                 })
             })
         });
 
-
-//Filtre Objects//
-        
-function filtreObjet(){
-    const elements = document.querySelectorAll('div.gallery figure');
-    elements.forEach((element) => {
-      const categoryId = element.getAttribute('category-id');
-      if (categoryId === '1') {
-        element.style.display = 'block';
-      } else {
-        element.style.display = 'none';
-      }
-    });
-}
-
-
-//Filtre Hotel & restaurants//
-        
-function filtreHotelsRestaurants(){
-    const elements = document.querySelectorAll('div.gallery figure');
-    elements.forEach((element) => {
-      const categoryId = element.getAttribute('category-id');
-      if (categoryId === '3') {
-        element.style.display = 'block';
-      } else {
-        element.style.display = 'none';
-      }
-    });
-}
-
-
-        
-//Filtre Appartements//
-
-function filtreAppartements(){
+function filtreWorks(filtreCategoryId) {
     const elements = document.querySelectorAll('div.gallery figure');
     elements.forEach((element) => {
         const categoryId = element.getAttribute('category-id');
-        if (categoryId === '2') {
+        if (categoryId === filtreCategoryId) {
             element.style.display = 'block';
         } else {
             element.style.display = 'none';
@@ -144,7 +109,26 @@ function filtreTous(){
 }
 
 
+function createFilterButton(categoryId, buttonText) {
+    const categoryButton = document.createElement('button')
+    categoryButton.setAttribute("type", "button")
+    if (categoryId) {
+        categoryButton.setAttribute('category-id', categoryId)
+    }
+    categoryButton.classList.add("bouton")
+    categoryButton.innerHTML = buttonText
 
+    /**
+     * On retourne le bouton en tant que résultat de la fonction
+     * 
+     * Comme ça, on peut assigner ce bouton à une variable lorsqu'on appellera la fonction :
+     * 
+     * ex : 
+     * 
+     * const monButton = createFilterButton("1", "Tous")
+     */
+    return categoryButton
+}
 
 
 

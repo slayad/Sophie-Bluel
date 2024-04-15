@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<title>Sophie Bluel - login</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-	<meta name="description" content="">
-	<link rel="stylesheet" href="./assets/style.css">
-	<script src="login.js"></script>
-
+    <meta charset="UTF-8">
+    <title>Sophie Bluel - login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+    <meta name="description" content="Page de connexion pour Sophie Bluel, architecte d'intérieur.">
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
     <header>
-        <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+        <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
         <nav>
             <ul>
-                <li href="index.html">projets</li>
-                <li href="index.html#contact">contact</li>
-                <li href="login.html">login</li>
-                <li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+                <li><a href="index.html">projets</a></li>
+                <li><a href="index.html#contact">contact</a></li>
+                <li><a href="login.html">login</a></li>
+                <li><a href="#"><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
             </ul>
         </nav>
     </header>
@@ -28,7 +26,7 @@
     <main>
         <section id="connexion">
             <h2>Login</h2>
-            <form class="loginForm" action="#" method="#">
+            <form class="loginForm" action="#" method="post">
                 <div class="connexionForm">
                     <label for="email">E-mail</label>
                     <input type="email" name="email" id="email" required>
@@ -40,17 +38,15 @@
                 <input class="submitBtn" type="submit" id="submitUserInfo" value="Se connecter">
                 <a href="#">Mot de passe oublié</a>
             </form>
-
         </section>
     </main>
 
     <footer>
         <nav>
             <ul>
-                <li>Mentions Légales</li>
+                <li><a href="#">Mentions Légales</a></li>
             </ul>
         </nav>
     </footer>
 </body>
-<script src="Javascript/login.js"></script>
-</html>   
+</html>
