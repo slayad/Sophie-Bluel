@@ -130,6 +130,29 @@ function createFilterButton(categoryId, buttonText) {
     return categoryButton
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    // Vérifie si un token d'authentification est présent dans le localStorage
+    const token = localStorage.getItem("token");
+
+    if (token) {
+        // Crée un élément de bandeau noir
+        const blackBanner = document.createElement("div");
+        blackBanner.classList.add("black-banner"); // Ajoute une classe CSS pour styler le bandeau noir
+        
+        // Ajoute le texte "Mode édition" dans le bandeau noir
+        const bannerText = document.createElement("p");
+        bannerText.textContent = "Mode édition";
+        blackBanner.appendChild(bannerText);
+
+        // Ajoute le bandeau noir à l'élément <body> de la page d'accueil
+        document.body.appendChild(blackBanner);
+
+        // Modifie le texte du lien "Login" en "Logout"
+        const loginLink = document.querySelector('nav ul li:nth-child(3) a'); // Sélectionne le lien "Login"
+        loginLink.textContent = "Logout";
+    }
+});
+
 
 
 

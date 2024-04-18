@@ -62,7 +62,9 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
+	
+	
 }
 section {
 	margin: 50px 0
@@ -312,4 +314,22 @@ body {
     margin-top: 5px;
     font-size: 0.9em;
     text-decoration: underline;
+}
+
+.black-banner {
+    background-color: black;
+    color: white; /* Couleur du texte */
+    height: 50px; /* Ajuste la hauteur selon tes besoins */
+    width: 100%; /* Le bandeau occupe toute la largeur de la page */
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center; /* Centre le texte horizontalement */
+    align-items: center; /* Centre le texte verticalement */
+}
+
+/* Ajoute de l'espace sous le bandeau noir */
+.black-banner + * {
+    margin-top: 20px; /* Ajuste cette valeur selon tes besoins */
 }
