@@ -130,6 +130,8 @@ function createFilterButton(categoryId, buttonText) {
     return categoryButton
 }
 
+// ********ADMIN MODE****** //
+
 document.addEventListener("DOMContentLoaded", function() {
     // Vérifie si un token d'authentification est présent dans le localStorage
     const token = localStorage.getItem("token");
@@ -140,6 +142,10 @@ document.addEventListener("DOMContentLoaded", function() {
         blackBanner.classList.add("black-banner"); // Ajoute une classe CSS pour styler le bandeau noir
         
         // Ajoute le texte "Mode édition" dans le bandeau noir
+        const editIcon = document.createElement('i');
+        editIcon.classList.add('far', 'fa-pen-to-square');
+        blackBanner.appendChild(editIcon);
+        editIcon.style.marginRight = "10px";
         const bannerText = document.createElement("p");
         bannerText.textContent = "Mode édition";
         blackBanner.appendChild(bannerText);
@@ -150,11 +156,31 @@ document.addEventListener("DOMContentLoaded", function() {
         // Modifie le texte du lien "Login" en "Logout"
         const loginLink = document.querySelector('nav ul li:nth-child(3) a'); // Sélectionne le lien "Login"
         loginLink.textContent = "Logout";
+
+        // Gestionnaire d'événements pour le lien "Logout"
+        loginLink.addEventListener("click", function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du lien
+            // Supprime le token d'authentification du localStorage
+            localStorage.removeItem("token");
+            // Redirige l'utilisateur vers la page de login
+            window.location.href = "login.html";
+        });
+
+
+
+        // Masque les boutons de filtre
+        document.querySelector(".filter").style.display = "none";
+
+        // Ajoute le lien "Modifier" à côté du titre "Mes Projets"
+        const portfolioHeader = document.querySelector('#portfolio h2');
+        const modifierLink = document.createElement('a');
+        modifierLink.href = '#';
+        modifierLink.style.fontSize = '14px'; // Taille de police
+        modifierLink.style.marginLeft = '20px'; // Marge à gauche
+        const icon = document.createElement('i');
+        icon.classList.add('fa-regular', 'fa-pen-to-square'); // Ajoute les classes pour l'icône
+        modifierLink.appendChild(icon); // Ajoute l'icône
+        modifierLink.appendChild(document.createTextNode(' Modifier')); // Ajoute le texte
+        portfolioHeader.appendChild(modifierLink);
     }
 });
-
-
-
-
-
-
