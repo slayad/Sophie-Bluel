@@ -166,8 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
             window.location.href = "login.html";
         });
 
-
-
         // Masque les boutons de filtre
         document.querySelector(".filter").style.display = "none";
 
@@ -182,5 +180,27 @@ document.addEventListener("DOMContentLoaded", function() {
         modifierLink.appendChild(icon); // Ajoute l'icône
         modifierLink.appendChild(document.createTextNode(' Modifier')); // Ajoute le texte
         portfolioHeader.appendChild(modifierLink);
+
+// ********MODAL****** //
+
+        // Ajoute un gestionnaire d'événements pour le clic sur le lien "Modifier"
+        modifierLink.addEventListener("click", function(event) {
+            event.preventDefault(); // Empêche le comportement par défaut du lien
+
+            // Recherchez le modal correspondant
+            const modal = document.querySelector('.modal');
+
+            // Affichez le modal en changeant son style
+            modal.style.display = 'block';
+        });
+
+    // Ajoute un gestionnaire d'événements pour le clic sur la croix pour fermer le modal
+    const closeButton = document.querySelector('.modalHeader .fa-xmark');
+    closeButton.addEventListener("click", function() {
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'none';
+
+        });
     }
 });
+

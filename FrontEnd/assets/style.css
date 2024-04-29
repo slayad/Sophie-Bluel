@@ -318,18 +318,86 @@ body {
 
 .black-banner {
     background-color: black;
-    color: white; /* Couleur du texte */
-    height: 50px; /* Ajuste la hauteur selon tes besoins */
-    width: 100%; /* Le bandeau occupe toute la largeur de la page */
+    color: white; 
+    height: 50px; 
+    width: 100%; 
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
-    justify-content: center; /* Centre le texte horizontalement */
-    align-items: center; /* Centre le texte verticalement */
+    justify-content: center; 
+    align-items: center; 
 }
 
 /* Ajoute de l'espace sous le bandeau noir */
 .black-banner + * {
-    margin-top: 20px; /* Ajuste cette valeur selon tes besoins */
+    margin-top: 20px; 
+}
+
+/* Modal */
+.modal {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.3);
+	z-index: 1;
+}
+.modalWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 50px);
+	width: 630px;
+	padding: 30px;
+	border-radius: 10px;
+	background-color: #FFFFFF;
+	margin: auto;
+	overflow: auto;
+	z-index: 2;
+	margin-top: 38em;
+
+}
+.modalHeader {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+#editGallery .modalHeader {
+	justify-content: flex-end;
+}
+.modal i {
+	display: block;
+	font-size: 1.5em;
+	border-bottom: 10px;
+}
+.modalTitle {
+	font-size: 26px;
+	margin-bottom: 47px;
+}
+.modalContent {
+	width: 70%;
+	border-bottom: 1px solid #B3B3B3;
+	padding-bottom: 47px;
+}
+#editGallery .modalContent {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	grid-auto-rows: 1fr;
+	grid-column-gap: 8px;
+	grid-row-gap: 10px;
+}
+#addPictureBtn {
+	width: auto;
+	padding: 10px 49px;
+	border-radius: 20px;
+	background-color: #1D6154;
+	color: #FFFFFF;
+	border: none;
+	margin-top: 35px;
 }
