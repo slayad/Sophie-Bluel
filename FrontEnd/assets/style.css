@@ -328,12 +328,6 @@ body {
     justify-content: center; 
     align-items: center; 
 }
-
-/* Ajoute de l'espace sous le bandeau noir */
-.black-banner + * {
-    margin-top: 20px; 
-}
-
 /* Modal */
 .modal {
 	display: none;
@@ -361,8 +355,10 @@ body {
 	overflow: auto;
 	z-index: 2;
 	margin-top: 38em;
-
 }
+
+
+
 .modalHeader {
 	display: flex;
 	flex-direction: row;
@@ -373,9 +369,10 @@ body {
 }
 .modal i {
 	display: block;
-	font-size: 1.5em;
-	border-bottom: 10px;
+	font-size: 17px;
+
 }
+
 .modalTitle {
 	font-size: 26px;
 	margin-bottom: 47px;
@@ -384,6 +381,11 @@ body {
 	width: 70%;
 	border-bottom: 1px solid #B3B3B3;
 	padding-bottom: 47px;
+	display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+
 }
 #editGallery .modalContent {
 	display: grid;
@@ -393,11 +395,167 @@ body {
 	grid-row-gap: 10px;
 }
 #addPictureBtn {
-	width: auto;
+	width: 237px;
 	padding: 10px 49px;
 	border-radius: 20px;
 	background-color: #1D6154;
 	color: #FFFFFF;
 	border: none;
 	margin-top: 35px;
+	font-weight: 700;
+	font-size: 14px;
+	font-family: 'Syne', sans-serif;
+}
+
+.modalContent img {
+    width: 78.12px; 
+    height: 104.08px; 
+}
+
+.workContainer {
+    position: relative;
+    display: inline-block; 
+}
+
+.fa-trash-can {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+
+.modal .fa-trash-can {
+    font-size: 17px;
+    color: #FFFFFF; 
+    background-color: #000000; 
+    padding: 5px; 
+
+}
+
+.miniWork {
+    margin-bottom: 20px; 
+}
+
+#addPicture {
+	display: none;
+}
+#addPicture .modalHeader {
+	justify-content: space-between; 
+}
+
+#addPictureForm {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 10px;
+}
+#labelPhoto {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 169px;
+	background-color: #E8F1F6;
+	border-radius: 3px;
+	margin-bottom: 30px;
+	text-align: center;
+	width: 100%;
+	padding: 25px 10px;
+	position: relative;
+	box-sizing: border-box;
+}
+#labelPhoto p {
+	font-size: 10px;
+	font-weight: 400;
+	color: #5a5959;
+	;
+}
+
+#labelPhoto img {
+    margin-bottom: 10px; 
+}
+
+#picture {
+	margin-bottom: 27px;
+	width: 5.1em;
+}
+#picturePreview {
+	display: flex;
+	background-color: #E8F1F6;
+	height: 200px;
+	width: 100%;
+	justify-content: center;
+}
+#picturePreview img {
+	height: 100%;
+	width: 31%;
+	object-fit: cover;
+}
+#browsePictures  {
+	font-family: 'Work Sans';
+	font-size: 1em;
+	font-weight: 600;
+	color: #3D3D3D;
+	width: fit-content;
+}
+#browsePictures {
+	color: #306685;
+	background-color: #CBD6DC;
+	border: none;
+	padding: 10px 33px;
+	margin-bottom: 10px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 60px;
+}
+#title {
+	margin-bottom: 11px;
+	height: 51px;
+	-webkit-box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.09); 
+	box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.09);
+	border-style: none;
+}
+select {
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	background-image: url('./icons/chevron-down.png');
+    background-repeat: no-repeat;
+    background-position: right 10px center;  
+    background-size: 12px;  
+    padding-right: 30px;  
+    background-color: #FFFFFF;
+    border: 1px solid #CBD6DC; 
+    border-radius: 4px;
+	height: 51px;
+	-webkit-box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.09); 
+	box-shadow: 5px 5px 14px 5px rgba(0,0,0,0.09);
+	border-style: none;
+}
+option {
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+}
+#photo {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#valider {
+	border: none;
+	padding: 10px 33px;
+	margin-bottom: 10px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 60px;
+	font-size: 1em;
+	font-weight: 600;
+	color: #FFFFFF;
+	width: 237px;
+	
 }
