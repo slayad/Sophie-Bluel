@@ -1,10 +1,10 @@
-import { getWorks, getCategories } from "./api.js";
+import { getWorks, getCategories, addWork } from "./api.js";
 import { displayGallery } from "./templates/gallery-works.js";
 import { displayModalGallery } from "./templates/modal-works.js";
 import { displayCategorieFilters } from "./templates/gallery-filters.js";
 import { manageAdminMode } from "./templates/admin-mode.js";
 
-// Gestion des miniatures et modal
+// Gestion des miniatures et modals
 document.addEventListener("DOMContentLoaded", function() {
     initializeEventHandlers();
     manageAdminMode();
@@ -12,20 +12,18 @@ document.addEventListener("DOMContentLoaded", function() {
     getWorks()
         .then(works => {
             displayGallery(works);  // Affiche les œuvres dans la galerie principale
-            displayModalGallery(works);
+            displayModalGallery(works); // Affiche les œuvres dans la modale
         })
-        .catch(error => console.error('Erreur:', error));
+        .catch(error => console.error('Erreur lors de la récupération des travaux :', error));
 
     getCategories()
         .then(categories => {
-            displayCategorieFilters(categories)
-        });
+            displayCategorieFilters(categories);
+        })
+        .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
 });
 
-
-
-//*******ajouter photos*******
-
+// Ajouter les catégories à la liste déroulante
 function selectCategoryForm() {
     const select = document.getElementById('selectCategory');
     getCategories()
@@ -37,19 +35,19 @@ function selectCategoryForm() {
                 select.appendChild(option);
             });
         })
-        .catch(error => console.error('Erreur lors du chargement des catégories:', error));
+        .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
 }
 
+// Initialiser les gestionnaires d'événements
 function initializeEventHandlers() {
-    // Gestionnaire d'événements pour ouvrir la modal de la galerie (première modal)
-    const editLink = document.querySelector(".fa-pen-to-square"); 
-    if (editLink) {
-        editLink.addEventListener("click", function() {
+    document.addEventListener("click", function(event) {
+        const editLink = document.querySelector("#editLink");
+        if (editLink && event.target.closest("#editLink")) {
+            event.preventDefault();
             openEditGallery();
-        });
-    }
+        }
+    });
 
-    // Gestionnaire d'événements pour ouvrir le modal d'ajout de photo
     const addPictureBtn = document.querySelector("#addPictureBtn");
     if (addPictureBtn) {
         addPictureBtn.addEventListener("click", function() {
@@ -57,7 +55,6 @@ function initializeEventHandlers() {
         });
     }
 
-    // Gestionnaires d'événements pour fermer les modals
     const editGalleryCloseButton = document.querySelector("#editGallery .fa-xmark");
     if (editGalleryCloseButton) {
         editGalleryCloseButton.addEventListener("click", function() {
@@ -68,7 +65,8 @@ function initializeEventHandlers() {
     const arrowLeft = document.querySelector("#addPicture .fa-arrow-left");
     if (arrowLeft) {
         arrowLeft.addEventListener("click", function() {
-            document.querySelector("#editGallery").style.display = "block";
+            document.querySelector(".modal").style.display = "flex"; // Assure que l'arrière-plan grisé est affiché
+            document.querySelector("#editGallery").style.display = "flex";
             document.querySelector("#addPicture").style.display = "none";
         });
     }
@@ -79,14 +77,22 @@ function initializeEventHandlers() {
             closeModal("#addPicture");
         });
     }
+
+    const submitButton = document.querySelector("#valider");
+    if (submitButton) {
+        submitButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            handleAddPictureFormSubmit();
+        });
+    }
 }
 
 function openEditGallery() {
     const modal = document.querySelector(".modal");
     const editGallery = document.querySelector("#editGallery");
 
-    modal.style.display = "flex";  // Affiche l'arrière-plan grisé
-    editGallery.style.display = "block";  // Affiche le modal de la galerie
+    modal.style.display = "flex";  // Assure que l'arrière-plan grisé est affiché
+    editGallery.style.display = "flex";  // Utilise `display: flex` pour maintenir la consistance
 }
 
 // Fonction pour initialiser le formulaire d'ajout de photo
@@ -99,40 +105,37 @@ function initializeAddPhotoForm() {
     const addPictureForm = document.querySelector("#addPictureForm");
     const photoInput = document.querySelector("#photo");
 
-    // Affiche le modal pour ajouter une photo et masque l'autre modal
+    document.querySelector(".modal").style.display = "flex"; // Assure que l'arrière-plan grisé est affiché
     addPictureModal.style.display = "flex";
     editGalleryModal.style.display = "none";
 
-    // Gestion de l'affichage des éléments du formulaire
     labelPhoto.style.display = "flex";
     picturePreview.style.display = "none";
-    submitButton.style.backgroundColor = "#A7A7A7";  // Couleur par défaut (grise)
+    submitButton.style.backgroundColor = "#A7A7A7";
 
-    // Réinitialise le formulaire à chaque ouverture
     addPictureForm.reset();
 
-    selectCategoryForm();// ajoute les catégories a la liste déroulante
-    prepareImagePreview(photoInput); //affiche aperçu de l'image
+    selectCategoryForm();
+    prepareImagePreview(photoInput);
 
-    // Gère les événements du formulaire
     handleFormEvents(addPictureForm, submitButton);
 }
 
 // Fonction pour gérer l'aperçu de l'image
 function prepareImagePreview(photoInput) {
     photoInput.addEventListener('change', function(event) {
-        event.preventDefault(); // Empêche le comportement par défaut
+        event.preventDefault();
 
-        const file = photoInput.files[0];  // Récupère le premier fichier sélectionné
+        const file = photoInput.files[0];
         if (file) {
-            const reader = new FileReader();  // Crée un lecteur de fichier
+            const reader = new FileReader();
             reader.onload = function(e) {
                 const previewImage = document.querySelector("#picturePreviewImg");
-                previewImage.src = e.target.result;  // Définit la source de l'image de prévisualisation
-                document.querySelector("#picturePreview").style.display = "flex";  // Affiche l'élément de prévisualisation
-                document.querySelector("#labelPhoto").style.display = "none";  // Cache l'élément labelPhoto
+                previewImage.src = e.target.result;
+                document.querySelector("#picturePreview").style.display = "flex";
+                document.querySelector("#labelPhoto").style.display = "none";
             };
-            reader.readAsDataURL(file);  // Lit le fichier en tant qu'URL de données
+            reader.readAsDataURL(file);
         }
     });
 }
@@ -143,18 +146,16 @@ function handleFormEvents(form, submitButton) {
         changeSubmitBtnColor(submitButton);
     };
 
-    // Gestionnaire pour fermer le modal d'ajout de photo et revenir à la galerie
     document.querySelector(".modalHeader .fa-arrow-left").addEventListener("click", function() {
-        document.querySelector("#editGallery").style.display = "block";  // Affiche le modal de la galerie
-        document.querySelector("#addPicture").style.display = "none";  // Cache le modal d'ajout de photo
+        document.querySelector(".modal").style.display = "flex"; // Assure que l'arrière-plan grisé est affiché
+        document.querySelector("#editGallery").style.display = "flex";
+        document.querySelector("#addPicture").style.display = "none";
 
-        // Réinitialise les styles du bouton "Ajouter une photo" pour s'assurer qu'il est centré
         const addPictureBtn = document.querySelector("#addPictureBtn");
         addPictureBtn.style.display = 'block';
-        addPictureBtn.style.margin = '20px auto';  // Centre le bouton horizontalement
+        addPictureBtn.style.margin = '20px auto';
     });
 
-    // Gestionnaire pour fermer le modal via la croix
     document.querySelector("#addPicture .fa-xmark").addEventListener("click", function() {
         closeModal("#addPicture");
     });
@@ -162,19 +163,60 @@ function handleFormEvents(form, submitButton) {
 
 // Fonction pour fermer un modal
 function closeModal(modalId) {
-    // document.querySelector(modalId).style.display = "none";
-    document.querySelector(".modal").style.display = "none";
+    const modal = document.querySelector(modalId);
+    if (modal) {
+        modal.style.display = "none";
+    }
+
+    const anyModalOpen = document.querySelector(".modalWrapper[style*='display: flex']");
+    if (!anyModalOpen) {
+        document.querySelector(".modal").style.display = "none"; // Masque également l'arrière-plan grisé
+    }
 }
 
 // Fonction pour changer la couleur du bouton de soumission
 function changeSubmitBtnColor(submitButton) {
     const photoInput = document.querySelector("#photo");
-    if (photoInput.files.length > 0) {  // Vérifie si un fichier a été sélectionné
-        submitButton.style.backgroundColor = "#306685";  // Couleur active lorsque la photo est sélectionnée
+    if (photoInput.files.length > 0) {
+        submitButton.style.backgroundColor = "#306685";
     } else {
-        submitButton.style.backgroundColor = "#A7A7A7";  // Couleur par défaut (grise)
+        submitButton.style.backgroundColor = "#A7A7A7";
     }
 }
 
-// Attache l'événement pour ouvrir le formulaire d'ajout
-document.querySelector("#addPictureBtn").addEventListener("click", initializeAddPhotoForm);
+// Fonction pour gérer la soumission du formulaire d'ajout de photo
+function handleAddPictureFormSubmit() {
+    const photoInput = document.querySelector("#photo");
+    const titleInput = document.querySelector("#title");
+    const categorySelect = document.querySelector("#selectCategory");
+
+    const photo = photoInput.files[0];
+    const title = titleInput.value;
+    const categoryId = categorySelect.value;
+    const categoryName = categorySelect.options[categorySelect.selectedIndex].text;
+
+    if (!photo || !title || !categoryId) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', photo, photo.name);
+    formData.append('title', title);
+    formData.append('category', categoryId);
+
+    sendNewData(formData, categoryName);
+}
+
+// Fonction pour envoyer les données de la nouvelle photo au serveur
+function sendNewData(formData,) {
+    addWork(formData)
+    .then(() => {
+        getWorks() // Récupérer les travaux mis à jour depuis le serveur
+            .then(updatedWorks => {
+                displayGallery(updatedWorks); // Met à jour l'affichage de la galerie avec les nouvelles données
+                displayModalGallery(updatedWorks); // Met à jour l'affichage de la modale avec les nouvelles données
+                closeModal(".modal"); // Ferme la modale
+            })
+    })
+}
