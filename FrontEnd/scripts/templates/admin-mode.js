@@ -42,7 +42,7 @@ export function manageAdminMode() {
         if (portfolioHeader) {
             const editLink = document.createElement('a');
             editLink.href = '#';
-            editLink.id = 'editLink'; // Ajout de l'ID editLink
+            editLink.id = 'editLink'; 
             editLink.style.fontSize = '14px';
             editLink.style.marginLeft = '20px';
 

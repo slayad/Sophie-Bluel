@@ -1,7 +1,5 @@
-import { deleteWork, getWorks } from "../api.js";
-import { displayGallery } from "./gallery-works.js";
+import { startDeleteWork } from '../index.js'; // Assurez-vous que ce chemin est correct
 
-// Fonction pour créer les travaux sur la page principale et les miniatures dans la modal
 export function displayModalGallery(works) {
     const modalContent = document.querySelector(".modalContent");
     modalContent.innerHTML = ""; // Efface le contenu précédent de la modal
@@ -30,27 +28,12 @@ export function displayModalGallery(works) {
         modalContent.appendChild(miniWork);
 
         // Gestionnaire d'événements pour l'icône de la corbeille
-        trashCan.addEventListener("click", () => startDeleteWork(work.id));
-    });
-}
-
-// Fonction de suppression de travail
-function startDeleteWork(workId) {
-    deleteWork(workId).then(response => {
-        if (response.ok) {
-            alert("Projet supprimé avec succès");
-            getWorks().then(updatedWorks => {
-                displayGallery(updatedWorks); // Mise à jour de la galerie
-                displayModalGallery(updatedWorks); // Mise à jour du modal
-            }).catch(error => {
-                console.error("Erreur lors de la récupération des travaux :", error);
-                alert("Une erreur s'est produite lors de la mise à jour des travaux.");
-            });
-        } else {
-            alert("Erreur : " + response.status);
-        }
-    }).catch(error => {
-        console.error("Erreur lors de la suppression du projet :", error);
-        alert("Une erreur s'est produite lors de la suppression du projet.");
+        trashCan.addEventListener("click", (event) => {
+            event.preventDefault(); 
+            event.stopPropagation(); 
+            console.log("Trash can clicked");
+            startDeleteWork(work.id, miniWork);
+            return false;
+        });
     });
 }

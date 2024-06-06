@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "serve": "^14.2.3"
+  },
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "live-server": "^1.2.2"
+  },
+  "scripts": {
+    "dev":"live-server",
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

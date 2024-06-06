@@ -10,13 +10,21 @@ export async function getCategories() {
 
 export async function deleteWork(workId) {
     const token = localStorage.getItem("token");
-    return fetch(`${API_URL}/works/${workId}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    });
+    try {
+        const response = await fetch(`${API_URL}/works/${workId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        console.log("deleteWork response", response);
+        return response;
+    } catch (error) {
+        console.error("Erreur lors de la suppression du travail :", error);
+        throw error;
+    }
 }
+
 
 export async function addWork(formData) {
     const token = localStorage.getItem("token");
