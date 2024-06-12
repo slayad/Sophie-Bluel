@@ -4,11 +4,24 @@ import { displayModalGallery } from "./templates/modal-works.js";
 import { manageAdminMode } from "./templates/admin-mode.js";
 import { displayCategorieFilters } from "./templates/gallery-filters.js";
 
-// Fonction pour supprimer un travail et mettre à jour la galerie sans recharger la page
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.classList.add('notification', type);
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    // Supprime la notification après 3 secondes
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
 export function startDeleteWork(workId, workElement) {
     deleteWork(workId).then(response => {
         if (response.ok) {
             workElement.remove(); // Supprime l'élément du DOM
+            showNotification('Photo supprimée avec succès.', 'success');
 
             // Récupérer les travaux mis à jour et rafraîchir la galerie
             getWorks().then(updatedWorks => {
@@ -19,29 +32,26 @@ export function startDeleteWork(workId, workElement) {
             });
         } else {
             console.error("Erreur lors de la suppression du projet :", response.status);
+            showNotification('Erreur lors de la suppression de la photo.', 'error');
         }
     }).catch(error => {
         console.error("Erreur lors de la suppression du projet :", error);
+        showNotification('Erreur lors de la suppression de la photo.', 'error');
     });
 }
 
-// Gestion des miniatures et modals
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOMContentLoaded");
     initializeEventHandlers();
     manageAdminMode();
 
-    // Prévenir le comportement par défaut des formulaires
     const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche le rechargement de la page
+            event.preventDefault();
             event.stopImmediatePropagation();
-            console.log('Form submission prevented');
         });
     });
 
-    // Récupération et affichage initial des œuvres et catégories
     getWorks()
         .then(works => {
             displayGallery(works);
@@ -56,27 +66,21 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
 });
 
-// Initialiser les gestionnaires d'événements
 function initializeEventHandlers() {
     document.addEventListener("click", function(event) {
-
-        // Gestion du clic pour éditer la galerie
         const editLink = document.querySelector("#editLink");
         if (editLink && event.target.closest("#editLink")) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            console.log("Edit link clicked");
             openEditGallery();
             return false;
         }
 
-        // Boutons spécifiques pour l'ajout de photos et la gestion des modales
         const addPictureBtn = document.querySelector("#addPictureBtn");
         if (addPictureBtn) {
             addPictureBtn.addEventListener("click", function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                console.log("Add picture button clicked");
                 initializeAddPhotoForm();
                 return false;
             });
@@ -87,7 +91,6 @@ function initializeEventHandlers() {
             editGalleryCloseButton.addEventListener("click", function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                console.log("Edit gallery close button clicked");
                 closeModal("#editGallery");
                 return false;
             });
@@ -98,8 +101,7 @@ function initializeEventHandlers() {
             arrowLeft.addEventListener("click", function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                console.log("Arrow left clicked");
-                switchModalViews("#editGallery", "#addPicture");
+                switchModalViews("#addPicture", "#editGallery");
                 return false;
             });
         }
@@ -109,7 +111,6 @@ function initializeEventHandlers() {
             closeButton.addEventListener("click", function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
-                console.log("Add picture close button clicked");
                 closeModal("#addPicture");
                 return false;
             });
@@ -121,16 +122,13 @@ function initializeEventHandlers() {
         submitButton.addEventListener("click", function(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            console.log("Submit button clicked");
             handleAddPictureFormSubmit(event);
             return false;
         });
     }
 }
 
-// Fonctions pour ouvrir la galerie d'édition, changer les vues de modales, et plus
 function openEditGallery() {
-    console.log("openEditGallery");
     const modal = document.querySelector(".modal");
     const editGallery = document.querySelector("#editGallery");
 
@@ -139,13 +137,11 @@ function openEditGallery() {
 }
 
 function switchModalViews(fromModal, toModal) {
-    console.log("switchModalViews");
     document.querySelector(fromModal).style.display = "none";
     document.querySelector(toModal).style.display = "flex";
 }
 
 function closeModal(modalId) {
-    console.log("closeModal");
     document.querySelector(modalId).style.display = "none";
     const anyModalOpen = document.querySelector(".modalWrapper[style*='display: flex']");
     if (!anyModalOpen) {
@@ -154,7 +150,6 @@ function closeModal(modalId) {
 }
 
 function initializeAddPhotoForm() {
-    console.log("initializeAddPhotoForm");
     const addPictureModal = document.querySelector("#addPicture");
     const editGalleryModal = document.querySelector("#editGallery");
     const labelPhoto = document.querySelector("#labelPhoto");
@@ -183,7 +178,6 @@ function prepareImagePreview(photoInput) {
     photoInput.addEventListener('change', function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log("Photo input changed");
 
         const file = photoInput.files[0];
         if (file) {
@@ -201,22 +195,21 @@ function prepareImagePreview(photoInput) {
 
 function handleFormEvents(form, submitButton) {
     form.onchange = function() {
-        console.log("Form changed");
         changeSubmitBtnColor(submitButton);
     };
 
-    document.querySelector(".modalHeader .fa-arrow-left").addEventListener("click", function(event) {
+    const arrowLeft = document.querySelector("#addPicture .fa-arrow-left");
+    arrowLeft.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log("Arrow left in form clicked");
         switchModalViews("#addPicture", "#editGallery");
         return false;
     });
 
-    document.querySelector("#addPicture .fa-xmark").addEventListener("click", function(event) {
+    const closeButton = document.querySelector("#addPicture .fa-xmark");
+    closeButton.addEventListener("click", function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log("Close button in form clicked");
         closeModal("#addPicture");
         return false;
     });
@@ -234,7 +227,6 @@ function changeSubmitBtnColor(submitButton) {
 function handleAddPictureFormSubmit(event) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    console.log("handleAddPictureFormSubmit");
 
     const photoInput = document.querySelector("#photo");
     const titleInput = document.querySelector("#title");
@@ -259,21 +251,22 @@ function handleAddPictureFormSubmit(event) {
 }
 
 function sendNewData(formData) {
-    console.log("sendNewData - Début");
     addWork(formData)
     .then(() => {
+        showNotification('Photo ajoutée avec succès.', 'success');
         return getWorks(); // Récupérer les travaux mis à jour depuis le serveur
     })
     .then(updatedWorks => {
         displayGallery(updatedWorks); // Met à jour l'affichage de la galerie avec les nouvelles données
         displayModalGallery(updatedWorks); // Met à jour l'affichage de la modale avec les nouvelles données
     })
-    .catch(error => console.error('Erreur lors de la récupération des travaux :', error));
-    console.log("sendNewData - Fin");
+    .catch(error => {
+        console.error('Erreur lors de la récupération des travaux :', error);
+        showNotification('Erreur lors de l\'ajout de la photo.', 'error');
+    });
 }
 
 function selectCategoryForm() {
-    console.log("selectCategoryForm");
     const select = document.getElementById('selectCategory');
     getCategories()
         .then(categories => {
@@ -286,4 +279,5 @@ function selectCategoryForm() {
         })
         .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
 }
+
 

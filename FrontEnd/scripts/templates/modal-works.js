@@ -1,4 +1,4 @@
-import { startDeleteWork } from '../index.js'; // Assurez-vous que ce chemin est correct
+import { startDeleteWork } from '../index.js'; 
 
 export function displayModalGallery(works) {
     const modalContent = document.querySelector(".modalContent");

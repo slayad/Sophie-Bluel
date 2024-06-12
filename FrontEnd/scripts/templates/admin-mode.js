@@ -1,6 +1,10 @@
 export function manageAdminMode() {
     const token = localStorage.getItem("token");
     if (token) {
+        // Conteneur pour la bande noire
+        const blackBannerContainer = document.createElement("div");
+        blackBannerContainer.classList.add("black-banner-container");
+
         // Bandeau noir
         const blackBanner = document.createElement("div");
         blackBanner.classList.add("black-banner");
@@ -15,8 +19,12 @@ export function manageAdminMode() {
         bannerText.textContent = "Mode édition";
         blackBanner.appendChild(bannerText);
 
-        // Ajout bandeau noir au body
-        document.body.appendChild(blackBanner);
+        // Ajout bandeau noir au-dessus du header
+        blackBannerContainer.appendChild(blackBanner);
+        const header = document.querySelector('header');
+        if (header) {
+            header.parentNode.insertBefore(blackBannerContainer, header);
+        }
 
         // Modifie login en logout
         const loginLink = document.querySelector('nav ul li:nth-child(3) a');
@@ -68,5 +76,6 @@ export function manageAdminMode() {
                 document.querySelector('#editGallery').style.display = 'none'; // Cache `editGallery`
             });
         }
+
     }
 }
