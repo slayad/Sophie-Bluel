@@ -168,10 +168,16 @@ function initializeAddPhotoForm() {
 
     addPictureForm.reset();
 
+    clearCategoryOptions();
     selectCategoryForm();
     prepareImagePreview(photoInput);
 
     handleFormEvents(addPictureForm, submitButton);
+}
+
+function clearCategoryOptions() {
+    const select = document.getElementById('selectCategory');
+    select.innerHTML = '';  // Vider le menu déroulant des catégories
 }
 
 function prepareImagePreview(photoInput) {
