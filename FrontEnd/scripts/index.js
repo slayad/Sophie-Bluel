@@ -172,7 +172,7 @@ function initializeAddPhotoForm() {
     selectCategoryForm();
     prepareImagePreview(photoInput);
 
-    handleFormEvents(addPictureForm, submitButton);
+    handleFormEvents(addPictureForm);
 }
 
 function clearCategoryOptions() {
@@ -193,15 +193,16 @@ function prepareImagePreview(photoInput) {
                 previewImage.src = e.target.result;
                 document.querySelector("#picturePreview").style.display = "flex";
                 document.querySelector("#labelPhoto").style.display = "none";
+                updateSubmitButtonState();
             };
             reader.readAsDataURL(file);
         }
     });
 }
 
-function handleFormEvents(form, submitButton) {
+function handleFormEvents(form) {
     form.onchange = function() {
-        changeSubmitBtnColor(submitButton);
+        updateSubmitButtonState();
     };
 
     const arrowLeft = document.querySelector("#addPicture .fa-arrow-left");
@@ -221,9 +222,13 @@ function handleFormEvents(form, submitButton) {
     });
 }
 
-function changeSubmitBtnColor(submitButton) {
+function updateSubmitButtonState() {
     const photoInput = document.querySelector("#photo");
-    if (photoInput.files.length > 0) {
+    const titleInput = document.querySelector("#title");
+    const categorySelect = document.querySelector("#selectCategory");
+    const submitButton = document.querySelector("#valider");
+
+    if (photoInput.files.length > 0 && titleInput.value.trim() !== "" && categorySelect.value !== "") {
         submitButton.style.backgroundColor = "#306685";
     } else {
         submitButton.style.backgroundColor = "#A7A7A7";
@@ -285,5 +290,6 @@ function selectCategoryForm() {
         })
         .catch(error => console.error('Erreur lors de la récupération des catégories :', error));
 }
+
 
 
